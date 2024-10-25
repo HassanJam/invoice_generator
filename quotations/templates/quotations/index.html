@@ -1,0 +1,179 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Generator Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  <!-- Custom styling -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Import Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script> <!-- Data labels plugin -->
+    <style>
+        body {
+            background-color: #f4f4f4; /* Light grey background for the body */
+        }
+        .flex-container {
+            display: flex; /* Use flexbox for layout */
+            justify-content: space-between; /* Space between items */
+            margin: 20px 0; /* Space between rows */
+        }
+        .chart-container {
+            flex: 1; /* Take remaining space */
+            height: 400px; /* Set fixed height */
+            background-color: #e0e0e0; /* Grey background for the chart container */
+            border-radius: 10px; /* Rounded corners for the container */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+            margin-left: 20px; /* Add margin for spacing */
+            display: flex; /* Use flexbox for centering content */
+            align-items: center; /* Vertically center content */
+            justify-content: center; /* Horizontally center content */
+        }
+        .balance-container {
+            flex: 0 0 45%; /* Fixed width for balance container */
+            padding: 20px;
+            background-color: #e0e0e0; /* Grey background for the balance container */
+            border-radius: 10px; /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+            text-align: center; /* Center text */
+            height: 360px; /* Set fixed height to match chart */
+            display: flex; /* Use flexbox for centering content */
+            align-items: center; /* Vertically center content */
+            justify-content: center; /* Horizontally center content */
+            flex-direction: column; /* Stack items vertically */
+        }
+        .balance-container h3 {
+            font-size: 2em; /* Increase font size */
+            font-weight: bold; /* Bold font */
+            color: #333; /* Darker text color */
+            margin: 0; /* Remove default margin */
+        }
+        .balance-container p {
+            font-size: 1.2em; /* Add optional description text */
+            color: #666; /* Lighter text color */
+            margin-top: 10px; /* Add space above */
+        }
+        .balance-container p {
+            background-color: #e0e0e0; /* Grey background for the balance container */
+            border-radius: 10px; /* Rounded corners */
+            font-size: 2.5em; /* Increase font size to emphasize balance */
+            font-weight: bold; /* Bold font to make it stand out */
+            color: black; /* Use a green color to highlight the balance */
+            margin: 10px 0 0 0; /* Add margin for space between h3 and p */
+            border: 2px solid #e0e0e0; /* Set border color same as the container's background */
+        }
+        .logout-button {
+            padding: 8px 16px; /* Add padding */
+            background-color: #007bff; /* Blue background */
+            color: white; /* White text color */
+            border: none; /* Remove default border */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Change cursor on hover */
+            font-size: 1em; /* Font size */
+            transition: background-color 0.3s; /* Transition for hover effect */
+            margin-top: 10px; /* Space from the top */
+            margin-left: 10px; /* Space from the left */
+        }
+        .logout-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <button class="logout-button">Logout</button> <!-- Logout button -->
+        <h1>Invoice System Dashboard</h1>
+    </header>
+
+    <nav class="sidebar">
+        <ul>
+            <li><a href="{% url 'index' %}">Home</a></li> <!-- Quotation button -->
+
+            <li><a href="{% url 'quotation' %}">Quotation</a></li> <!-- Quotation button -->
+            <li><a href="{% url 'invoices' %}">Invoices</a></li> <!-- Invoices button -->
+        </ul>
+    </nav>
+
+    <!-- Main content -->
+    <div class="main-content">
+        <h2>Welcome to the Dashboard</h2>
+
+        <!-- Row for Total Balance and Chart -->
+        <div class="flex-container">
+            <!-- Total Balance Container -->
+            <div class="balance-container">
+                <h3>Total Balance:</h3> 
+                <p> ${{ total_balance }}</p> <!-- Display total balance -->
+            </div>
+            <!-- Chart container -->
+            <div class="chart-container">
+                <canvas id="quotationPieChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const ctx = document.getElementById('quotationPieChart').getContext('2d');
+        
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(75, 192, 192, 0.8)');
+        gradient.addColorStop(1, 'rgba(54, 162, 235, 0.8)');
+
+        const chart = new Chart(ctx, {
+            type: 'bar',  // Keep as bar chart
+            data: {
+                labels: ['Quotations'],  // Label for the bar chart
+                datasets: [{
+                    label: 'Total Quotations',
+                    data: [{{ total_quotations }}],  // Dynamic data from views
+                    backgroundColor: [gradient],
+                    borderColor: ['rgba(75, 192, 192, 1)'],
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: true,  // Display legend
+                        position: 'top'
+                    },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'end',
+                        formatter: (value) => {
+                            return value; // Show value directly
+                        },
+                        color: '#fff',
+                        font: {
+                            size: 16, // Increased font size
+                            weight: 'bold' // Bold text
+                        },
+                        borderColor: '#fff', // Optional: border color for better contrast
+                        borderWidth: 1 // Optional: border width
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: '#000', // Change tick color for visibility
+                            font: {
+                                size: 14 // Increase tick font size
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            },
+            plugins: [ChartDataLabels] // Enable data labels plugin
+        });
+    </script>
+
+</body>
+</html>

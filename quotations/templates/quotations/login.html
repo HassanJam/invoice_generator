@@ -1,0 +1,110 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}"> <!-- Link your CSS file -->
+    <style>
+        /* Additional inline styles for the login page, if necessary */
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;  /* Use a font similar to the rest of your application */
+            background-color: #f9f9f9;          /* Light background color */
+        }
+        
+        .login-container {
+            display: flex;                     /* Flexbox for centering */
+            justify-content: center;           /* Center horizontally */
+            align-items: center;               /* Center vertically */
+            height: 100vh;                    /* Full viewport height */
+        }
+
+        .login-card {
+            background-color: white;           /* White background for the card */
+            border-radius: 10px;               /* Rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            padding: 20px;                     /* Inner padding for the card */
+            width: 300px;                      /* Fixed width for the card */
+        }
+
+        h1 {
+            text-align: center;                /* Center the title */
+            font-size: 24px;                   /* Adjust font size */
+            color: #333;                       /* Darker color for better contrast */
+            margin-bottom: 20px;               /* Space below the title */
+        }
+
+        .error-message {
+            color: red;                       /* Red color for error messages */
+            text-align: center;               /* Center error message */
+            margin: 10px 0;                  /* Space around error message */
+        }
+
+        label {
+            display: block;                   /* Block display for labels */
+            margin-bottom: 5px;              /* Space below labels */
+            font-size: 1em;                  /* Font size for labels */
+            color: #333;                     /* Dark color for labels */
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;                     /* Full width input fields */
+            padding: 10px;                   /* Inner padding for inputs */
+            margin-bottom: 15px;             /* Space below inputs */
+            border: 1px solid #ccc;          /* Border for input fields */
+            border-radius: 4px;              /* Slightly rounded corners */
+            font-size: 1em;                  /* Font size for input text */
+            outline: none;                   /* Remove default focus outline */
+        }
+
+        button {
+            width: 100%;                     /* Full width button */
+            padding: 10px;                   /* Inner padding for button */
+            background-color: #3e85cd;       /* Match header color */
+            color: white;                    /* White text */
+            border: none;                    /* Remove border */
+            border-radius: 4px;              /* Rounded corners */
+            font-size: 1.1em;                /* Larger font size for button */
+            cursor: pointer;                 /* Pointer cursor on hover */
+            transition: background-color 0.3s; /* Smooth background transition */
+        }
+
+        button:hover {
+            background-color: #2d6b9f;       /* Darker shade on hover */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to Quotation System</h1>
+    </header>
+
+    <div class="login-container">
+        <div class="login-card">
+            <h1>Login</h1>
+
+            {% if messages %}
+                <div class="error-message">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

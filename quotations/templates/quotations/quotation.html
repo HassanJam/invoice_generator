@@ -1,0 +1,167 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quotation - Invoice Generator</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  <!-- Correctly linked CSS -->
+
+
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Quotation</h1>
+    </header>
+
+    <nav class="sidebar">
+        <ul>
+            <li><a href="{% url 'index' %}">Home</a></li> <!-- Quotation button -->
+
+            <li><a href="{% url 'quotation' %}">Quotation</a></li> <!-- Quotation button -->
+            <li><a href="{% url 'invoices' %}">Invoices</a></li> <!-- Invoices button -->
+        </ul>
+    </nav>
+    
+
+    <div class="main-content">
+        <h2>Quotation</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <!-- Table-like structure for data entry -->
+            <table class="quotation-table">
+                <tr>
+                    <td>Customer Name:</td>
+                    <td><input type="text" name="customer_name" placeholder="Enter customer name" class="large-input"></td>
+                    <td>Telephone:</td>
+                    <td><input type="text" name="telephone" placeholder="Enter phone number" class="large-input"></td>
+                    <td>Quotation Number:</td>
+                    <td><input type="text" id="quotation-number" value="{{ next_quotation_number }}" readonly class="large-input"></td>
+                </tr>
+                <tr>
+                    <td>Car Type:</td>
+                    <td colspan="5">
+                        <select name="car_type" style="width: 100%; border: none; font-size: 1.2em; padding: 5px;" class="large-select">
+                            <option value="new">New</option>
+                            <option value="used">Used</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>CPR:</td>
+                    <td colspan="5">
+                        <input type="text" name="cpr" placeholder="Enter 11-digit CPR number" maxlength="11" pattern="\d{11}" required class="large-input">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date:</td>
+                    <td colspan="5">
+                        <input type="date" name="date" id="date-picker" style="width: 100%; border: none; padding: 5px; font-size: 1.2em;">
+                    </td>
+                </tr>
+                <tr>
+                    <td>TO:</td>
+                    <td colspan="5">
+                        <select name="to" style="width: 100%; border: none; font-size: 1.2em; padding: 5px;" class="large-select">
+                            <option value="NBB">NBB</option>
+                            <option value="BBK">BBK</option>
+                            <option value="AUB">AUB</option>
+                            <option value="BCFC">BCFC</option>
+                            <option value="NFH">NFH</option>
+                            <option value="BISB">BISB</option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Additional text below the table -->
+            <p style="margin-top: 20px;">Please find below the black Zone Motor offer for the mentioned vehicle. Finance (7 year)</p>
+            
+            <!-- Car Brand Dropdown next to the label -->
+            <div style="margin-top: 20px;">
+                <div class="flex-container">
+                    <label for="car_brand" class="large-label">Car Brand:</label>
+                    <select name="car_brand" id="car_brand" class="large-select">
+                        <option value="" disabled selected>Select a car brand</option>
+                        <option value="Toyota">Toyota</option>
+                        <option value="Honda">Honda</option>
+                        <option value="Ford">Ford</option>
+                        <option value="Chevrolet">Chevrolet</option>
+                        <option value="Nissan">Nissan</option>
+                        <option value="BMW">BMW</option>
+                        <option value="Mercedes">Mercedes</option>
+                        <option value="Audi">Audi</option>
+                        <option value="Volkswagen">Volkswagen</option>
+                        <option value="Hyundai">Hyundai</option>
+                        <option value="Kia">Kia</option>
+                        <option value="Subaru">Subaru</option>
+                        <option value="Mazda">Mazda</option>
+                        <option value="Lexus">Lexus</option>
+                        <option value="Porsche">Porsche</option>
+                        <option value="Jaguar">Jaguar</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Additional fields for vehicle details -->
+            <div style="margin-top: 20px;">
+                <div class="flex-container">
+                    <label for="chassis_no" class="large-label">Chassis No:</label>
+                    <input type="text" name="chassis_no" id="chassis_no" placeholder="Enter Chassis No" class="large-input half-width">
+                </div>
+                <div class="flex-container">
+                    <label for="engine_no" class="large-label">Engine No:</label>
+                    <input type="text" name="engine_no" id="engine_no" placeholder="Enter Engine No" class="large-input half-width">
+                </div>
+                <div class="flex-container">
+                    <label for="color" class="large-label">Color:</label>
+                    <input type="text" name="color" id="color" placeholder="Enter Vehicle Color" class="large-input half-width">
+                </div>
+                <div class="flex-container">
+                    <label for="selling_price" class="large-label">Selling Price:</label>
+                    <input type="number" name="selling_price" id="selling_price" placeholder="Enter Selling Price" class="large-input half-width" oninput="calculateTotals()">
+                </div>
+                <div class="flex-container">
+                    <label for="vat" class="large-label">VAT 10%:</label>
+                    <input type="number" name="vat" id="vat" placeholder="VAT 10%" class="large-input half-width" readonly>
+                </div>
+                <div class="flex-container">
+                    <label for="total" class="large-label">Total:</label>
+                    <input type="number" name="total" id="total" placeholder="Total" class="large-input half-width" readonly>
+                </div>
+                <div class="flex-container">
+                    <label for="downpayment" class="large-label">Downpayment:</label>
+                    <input type="number" name="downpayment" id="downpayment" placeholder="Enter Downpayment" class="large-input half-width" oninput="calculateBalance()">
+                </div>
+                <div class="flex-container">
+                    <label for="balance" class="large-label">Balance:</label>
+                    <input type="number" name="balance" id="balance" placeholder="Balance" class="large-input half-width" readonly>
+                </div>
+            </div>
+                <!-- Save Button -->
+            <div style="text-align: right; margin-top: 20px;">
+                <button type="submit" class="save-btn">Save Quotation</button>
+            </div>
+        </form>
+        <!-- Additional note about the deal -->
+        <div class="deal-text">
+            <p>Deal to be canceled within 7 days upon receiving down payment.<br>Note: down payment has not been paid yet to BLACK ZONE MOTOR.<br>Should you require further information please don't hesitate to contact undesigned.</p>
+        </div>
+
+        <!-- Signature -->
+        <div style="text-align: left; font-weight: bold; margin-top: 20px;">
+            Kind Regards,<br>
+            Mazin Adil Naim
+        </div>
+        <!-- Footer -->
+        <footer style="text-align: center; margin-top: 40px; font-size: 0.9em;">
+            <div>BLACK ZONE MOTOR W.L.L CR: 162891-1 Flat.9 Building.56 Road.40 Block VAT A/C</div>
+            <div>NO: 220020880900002</div>
+        </footer>
+
+        <script src="{% static 'css/script.js' %}" defer></script>
+
+    </body>
+</html>

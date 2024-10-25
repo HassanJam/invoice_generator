@@ -1,0 +1,192 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoices - Invoice Generator</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">  <!-- Correctly linked CSS -->
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Invoice</h1>
+    </header>
+
+    <nav class="sidebar">
+        <ul>
+            <li><a href="{% url 'index' %}">Home</a></li> <!-- Quotation button -->
+
+            <li><a href="{% url 'quotation' %}">Quotation</a></li> <!-- Quotation button -->
+            <li><a href="{% url 'invoices' %}">Invoices</a></li> <!-- Invoices button -->
+        </ul>
+    </nav>
+    
+    <!-- Main content -->
+    <div class="main-content">
+        <h2>Invoices</h2>
+        
+        <table class="invoice-table">
+            <tr>
+                <td class="invoice-label">Flat / Shop NO.9</td>
+                <td class="invoice-right">
+                    Invoice Number :
+                    <input type="text" class="invoice-input" id="invoice-number" />
+                </td>
+            </tr>
+            <tr>
+                <td class="invoice-label">Building, 56</td>
+                <td class="invoice-right">
+                    Date :
+                    <input type="text" class="invoice-input" id="invoice-date" />
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2" class="invoice-label" style="text-align: right;">
+                    ROAD / STREET 40, BLOCK 240 ARAD, BAHRAIN
+                </td>
+            </tr>
+            <tr>
+                <td class="invoice-label">Client Name</td>
+                <td class="invoice-right">
+                    <select class="invoice-inputs" id="client-select">
+                        <option value="" disabled selected>Select a client</option>
+                        {% for client in client_names %}
+                            <option value="{{ client }}">{{ client }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td class="invoice-label">TEL:</td> <!-- Keep label on the left -->
+                <td class="invoice-right" style="text-align: center;">
+                    <input type="text" class="invoice-input no-border" id="client-phone" />  <!-- Add class for no border -->
+                </td>
+            </tr>
+            
+        </table>
+        <table class="invoice-table" style="margin-top: 20px; border-collapse: collapse;">
+            <tr style="background-color: lightgrey;">
+                <th class="invoice-label" style="text-align: center; border: 1px solid black; padding: 10px; font-size: 1.2em;">Description</th>
+                <th class="invoice-label" style="text-align: center; border: 1px solid black; padding: 10px; font-size: 1.2em; width: 400px;">Amount (BHD)</th>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; height: 40px;"></td>
+                <td style="border: 1px solid black; height: 40px;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 10px;">
+                    Chassis Number: <input type="text" id="chassis-number" class="invoice-input" style="width: 100%;"/>
+                </td>
+                <td style="border: 1px solid black; height: 40px;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 10px;">
+                    Color: <input type="text" id="color" class="invoice-input" style="width: 100%;"/>
+                </td>
+                <td style="border: 1px solid black; height: 40px;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 10px;">
+                    Type: <input type="text" id="type" class="invoice-input" style="width: 100%;"/>
+                </td>
+                <td style="border: 1px solid black; height: 40px;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 10px;">
+                    Engine Number: <input type="text" id="engine-number" class="invoice-input" style="width: 100%;"/>
+                </td>
+                <td style="border: 1px solid black; height: 40px;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 10px;">
+                    Year: <input type="text" id="year" class="invoice-input" style="width: 100%;"/>
+                </td>
+                <td style="border: 1px solid black; height: 40px;"></td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid black; padding: 10px;">
+                    Model: <input type="text" id="model" class="invoice-input" style="width: 100%;"/>
+                </td>
+                <td style="border: 1px solid black; height: 40px;"></td>
+            </tr>
+            <tr style="border: 1px solid black; padding: 10px;" > <!-- Add a new heading row -->
+                <td  class="invoice-label" style="text-align: center; padding: 10px;">Car Value Without VAT</td>
+                <td style="border: 1px solid black; padding: 10px;" class="invoice-label" style="text-align: center; padding: 10px;" id="car-value">None</td>
+            </tr>
+            <tr style="border: 1px solid black; padding: 10px;">
+                <td class="invoice-label" style="text-align: center; padding: 10px;">VAT @ 10%</td>
+                <td style="border: 1px solid black; padding: 10px;" class="invoice-label" style="text-align: center; padding: 10px;" id="vat"></td>
+            </tr>
+            <tr style="border: 1px solid black; padding: 10px;">
+                <td class="invoice-label" style="text-align: center; padding: 10px;">Total Amount</td>
+                <td style="border: 1px solid black; padding: 10px;" class="invoice-label" style="text-align: center; padding: 10px;" id="total-amount"></td>
+            </tr>
+            <tr style="border: 1px solid black; padding: 10px;">
+                <td class="invoice-label" style="text-align: center; padding: 10px;">Down Payment</td>
+                <td style="border: 1px solid black; padding: 10px;" class="invoice-label" style="text-align: center; padding: 10px;" id="down-payment"></td>
+            </tr>
+            <tr style="border: 1px solid black; padding: 10px;">
+                <td class="invoice-label" style="text-align: center; padding: 10px;">Balance Amount</td>
+                <td style="border: 1px solid black; padding: 10px;" class="invoice-label" style="text-align: center; padding: 10px;" id="balance-amount"></td>
+            </tr>
+        </table>
+        
+       <!-- Add the text below the invoice table -->
+       <div class="beneficiary-info" style="margin-top: 20px; font-size: 1em;">
+        <p>Beneficiary Name: BLACK ZONE MOTOR W.L.L<br>Beneficiary Bank A/C No: 100000471364<br>IBAN: BH88-BBKU00100000471364<br>Beneficiary Bank Name: Bank of Bahrain & Kuwait</p>
+    </div>
+    <div class="beneficiary-info" style="margin-top: 20px; font-size: 1em;">
+        <p>ALI ALSAIRAFI</p>
+    </div>
+
+        <!-- Footer -->
+        <footer style="text-align: center; margin-top: 40px; font-size: 0.9em;">
+            <div>BLACK ZONE MOTOR W.L.L CR: 162891-1 Flat.9 Building.56 Road.40 Block VAT A/C</div>
+            <div>NO: 220020880900002</div>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('client-select').addEventListener('change', function() {
+            const clientName = this.value;  // Get the selected client name
+            console.log('Selected client:', clientName);
+            
+            fetch(`/get-client-invoice-details/?client_name=${clientName}`)
+                .then(response => {
+                    if (!response.ok) throw new Error('Client not found');
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Fetched data:', data);  // Log the entire data object
+                    
+                    document.getElementById('invoice-number').value = data.invoice_number || 'None';
+                    document.getElementById('invoice-date').value = data.date || 'None';
+                    document.getElementById('client-phone').value = data.phone || 'None'; // Update the phone number
+                    
+                    // Access values using bracket notation, default to 'None' if not available
+                    document.getElementById('chassis-number').value = data['chassis-number'] || 'None'; // Update Chassis Number
+                    document.getElementById('color').value = data.color || 'None'; // Update Color
+                    document.getElementById('type').value = data.type || 'None'; // Update Type
+                    document.getElementById('engine-number').value = data['engine-number'] || 'None'; // Update Engine Number
+                    document.getElementById('year').value = data.year || 'None'; // Update Year
+                    document.getElementById('model').value = data.model || 'None'; // Update Model
+                    
+                    // New fields
+                    document.getElementById('car-value').innerText = data['car-value'] || 'None'; // Update Car Value Without VAT
+                    document.getElementById('vat').innerText = data.vat || 'None'; // Update VAT
+                    document.getElementById('total-amount').innerText = data['total-amount'] || 'None'; // Update Total Amount
+                    document.getElementById('down-payment').innerText = data['down-payment'] || 'None'; // Update Down Payment
+                    document.getElementById('balance-amount').innerText = data['balance-amount'] || 'None'; // Update Balance Amount
+                })
+                .catch(error => {
+                    console.error('Error fetching client details:', error);
+                });
+        });
+        
+    </script>
+        
+        
+</body>
+</html>

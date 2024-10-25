@@ -1,0 +1,263 @@
+/* Header styles */
+header {
+    background-color: #3e85cd;  /* Blue background for the header */
+    padding: 20px;              /* Add some padding */
+    color: white;               /* Set text color to white for better contrast */
+    position: fixed;            /* Fix header at the top */
+    top: 0;                     /* Align to the top */
+    left: 0;                    /* Align to the left */
+    width: 100%;     
+    height: 100px;           /* Full width */
+    z-index: 1;                 /* Ensure the header is above the sidebar */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);  /* Add shadow for better separation */
+}
+
+h1 {
+    text-align: center;         /* Center the text */
+    font-family: 'Arial', sans-serif;  /* Choose a simple font */
+    font-size: 36px;            /* Increase font size */
+    color: white;               /* Set text color to white */
+}
+
+/* Sidebar styles */
+.sidebar {
+    width: 200px;               /* Fixed width */
+    height: calc(100vh - 80px); /* Full height minus header height */
+    background-color: #3e85cd;  /* Same background as the header */
+    position: fixed;            /* Make it stick to the left */
+    top: 80px;                  /* Start after the header (adjust based on header height) */
+    left: 0;                    /* Stick to the left */
+    padding-top: 20px;          /* Add padding inside the sidebar */
+}
+
+.sidebar ul {
+    list-style-type: none;      /* Remove default bullet points */
+    padding-top: 0;
+    margin: 0;
+}
+
+.sidebar ul li {
+    margin: 20px 0;             /* Add some space between options */
+}
+
+.sidebar ul li a {
+    text-decoration: none;      /* Remove underline from links */
+    color: white;               /* Make the text color white */
+    font-size: 18px;           /* Increase font size */
+    margin-top: 35px;
+    padding: 10px;              /* Add padding inside the links */
+    display: block;             /* Make the whole item clickable */
+    text-align: center;         /* Center the text inside the links */
+}
+
+.sidebar ul li a:hover {
+    background-color: #2d6b9f;  /* Darker blue on hover */
+    cursor: pointer;            /* Change cursor to pointer */
+}
+
+/* Main content area */
+.main-content {
+    margin-left: 220px;         /* Add margin to the left to avoid overlap with the sidebar */
+    padding: 20px;
+    margin-top: 100px;          /* Add margin from the top to avoid overlap with the header */
+}
+.main-content h2 {
+    text-align: center;      /* Center the text horizontally */
+    font-size: 28px;         /* Adjust the font size as desired */
+    color: #333333;          /* Dark text color */
+    margin-bottom: 20px;     /* Add some space below the heading */
+}
+.quotation-table {
+    width: 100%;                /* Make the table span the entire width */
+    border-collapse: collapse;   /* Remove default spacing between table cells */
+    margin-top: 20px;            /* Add some space below the heading */
+}
+
+.quotation-table td {
+    border: 1px solid #ccc;      /* Add a light border to the table cells */
+    padding: 10px;               /* Add padding inside the table cells */
+    font-size: 16px;             /* Set the font size for table text */
+}
+
+.quotation-table input {
+    width: 100%;                 /* Make the input fields stretch the full width of the cell */
+    padding: 5px;                /* Add some padding inside the input fields */
+    font-size: 14px;             /* Set font size for input text */
+    border: none;                /* Remove the border */
+    background-color: #f9f9f9;   /* Light background to differentiate input area */
+    outline: none;               /* Remove the default focus outline */
+}
+.quotation-table select {
+    width: 100%;                 /* Make the dropdown stretch the full width of the cell */
+    padding: 5px;               /* Add some padding inside the dropdown */
+    font-size: 14px;            /* Set font size for dropdown text */
+    border: none;               /* Remove the border */
+    background-color: #f9f9f9;  /* Light background to differentiate dropdown */
+    outline: none;              /* Remove the default focus outline */
+    appearance: none;           /* Remove default dropdown arrow */
+}
+/* Additional styling for the text below the table */
+.main-content p {
+    font-family: 'Arial', sans-serif;  /* Use the same font as header */
+    font-size: 18px;                   /* Set a readable font size */
+    color: #333333;                    /* Dark color for the text */
+    margin-top: 20px;                  /* Add some space above the text */
+    line-height: 1.5;                  /* Improve line spacing */
+    text-align: left;                /* Center the text */
+    padding: 10px;                     /* Add padding for better spacing */
+    border: 1px solid white;            /* Optional: add a border for definition */
+    border-radius: 5px;                /* Optional: add slight rounding to corners */
+    background-color: #f9f9f9;         /* Optional: add a light background color */
+}
+
+/* Dashboard card styles */
+.dashboard {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.dashboard-card {
+    background-color: #f1f1f1;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 45%;  /* Adjust based on layout */
+}
+
+.dashboard-card h3 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.dashboard-card p {
+    font-size: 36px;
+    margin: 0;
+    font-weight: bold;
+    color: #3e85cd;
+}
+
+/* General styling for labels and inputs */
+.large-label {
+    font-size: 1.5em; /* Increase font size */
+    margin-right: 10px; /* Space between label and input */
+    width: 150px; /* Fixed width for consistent alignment */
+    display: inline-block; /* Align labels in a line */
+}
+
+.large-input, .large-select {
+    font-size: 1.2em; /* Increase font size */
+    padding: 5px; /* Add some padding */
+    border: none; /* Remove border */
+    border-bottom: 2px solid #000; /* Bottom border for input focus */
+    width: calc(100% - 160px); /* Adjust width based on label size */
+    transition: border-bottom-color 0.3s; /* Smooth transition for focus effect */
+}
+
+.large-select:focus, .large-input:focus {
+    outline: none; /* Remove outline on focus */
+    border-bottom-color: blue; /* Change bottom border color on focus */
+}
+
+/* Specific styling for the entire section */
+.flex-container {
+    display: flex; /* Use flexbox for alignment */
+    align-items: center; /* Center align items */
+    margin-bottom: 15px; /* Space below each row */
+}
+
+/* Main content styles */
+.main-content {
+    padding: 20px; /* Space around main content */
+}
+
+/* Table styles for organization */
+.quotation-table {
+    width: 100%; /* Full width for the table */
+    margin-top: 20px; /* Space above the table */
+}
+
+.quotation-table td {
+    padding: 10px; /* Space in table cells */
+}
+
+/* Specific styling for the additional fields */
+.half-width {
+    width: calc(50% - 80px); /* Half width adjustment */
+}
+
+/* Deal cancellation text styling */
+.deal-text {
+    margin-top: 20px; /* Space above the text */
+    font-size: 1.1em; /* Increase font size */
+    color: red; /* Highlight the text */
+    font-weight: bold; /* Make the text bold */
+}
+.save-btn {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+}
+
+.save-btn:hover {
+    background-color: #45a049;
+}
+.invoice-table {
+    width: 100%; /* Full width of the container */
+    border-collapse: collapse; /* Collapse borders */
+    margin-bottom: 10px; /* Space below the table */
+}
+
+.invoice-table td {
+    padding: 5px; /* Space inside table cells */
+    vertical-align: middle; /* Align items vertically in the center */
+}
+
+/* Style for the invoice label */
+.invoice-label {
+    font-size: 1em; /* Set the font size for the label */
+}
+
+/* Style for the invoice input */
+.invoice-input {
+    padding: 3px; /* Padding inside the input field */
+    font-size: 1em; /* Set the font size for input text */
+    border: 1px solid #ccc; /* Border for the input */
+    border-radius: 4px; /* Slightly rounded corners */
+    width: 150px; /* Set a fixed width for consistency */
+}
+.invoice-inputs {
+    width: 100%; /* Make the dropdown stretch the full width of the cell */
+    padding: 5px; /* Add some padding */
+    font-size: 14px; /* Set font size for dropdown text */
+    border: 1px solid #ccc; /* Add border */
+    border-radius: 4px; /* Slightly rounded corners */
+    background-color: #f9f9f9; /* Light background to match inputs */
+}
+
+/* Hide the table borders */
+.invoice-table {
+    border: none; /* Remove border */
+}
+
+.invoice-table td {
+    border: none; /* Remove border from table cells */
+}
+
+/* Align right */
+.invoice-right {
+    text-align: right; /* Align text to the right */
+}
+.no-border {
+    border: none; /* Remove the border */
+    outline: none; /* Remove the outline when focused */
+    background-color: transparent; /* Optional: make background transparent */
+    text-align: center; /* Center text within the input field */
+    width: 50%; /* Optional: set width */
+    /* Add padding if needed for aesthetics */
+    padding: 8px; /* Adjust as necessary */
+}
