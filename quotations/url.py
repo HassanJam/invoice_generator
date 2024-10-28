@@ -8,4 +8,6 @@ urlpatterns = [
     path('create-invoice/', index_view, name='create_invoice'),
     path('get-client-invoice-details/', get_client_invoice_details, name='get_client_invoice_details'),
     path('signup/', signup_view, name='signup'),  # Add signup URL
+    path('login/', login_view, name='login'),  # Ensure this is included
+
 ]

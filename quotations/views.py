@@ -8,10 +8,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 
-# views.py
 def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -21,9 +21,8 @@ def login_view(request):
             login(request, user)
             return redirect('index')  # Redirect to the index view after successful login
         else:
-            # Invalid login, display error message
             messages.error(request, 'Invalid username or password')
-    return render(request, 'quotations/login.html')  # Render the login page
+    return render(request, 'quotations/login.html')
 
 
 # Sign Up View
@@ -67,7 +66,7 @@ def get_client_invoice_details(request):
         return JsonResponse({'error': 'Multiple quotations found'}, status=400)
 
 
-
+@login_required(login_url='login')  # Redirect to login if not logged in
 def index_view(request):
     # Count the total number of quotations (invoices)
     total_quotations = Quotation.objects.count()
@@ -82,14 +81,15 @@ def index_view(request):
 
     return render(request, 'quotations/index.html', context)
 
-
+@login_required(login_url='login')  # Redirect to login if not logged in
 def quotation_view(request):
+    
     # Get the last quotation number and increment for the display
     last_quotation = Quotation.objects.order_by('quotation_number').last()
     next_quotation_number = last_quotation.quotation_number + 1 if last_quotation else 1
 
     if request.method == 'POST':
-        # Capture form data (your existing code)
+        # Capture form data
         customer_name = request.POST.get('customer_name')
         telephone = request.POST.get('telephone')
         car_type = request.POST.get('car_type')
@@ -106,12 +106,9 @@ def quotation_view(request):
         downpayment = request.POST.get('downpayment')
         balance = request.POST.get('balance')
 
-        # Get the last quotation number and increment
-        quotation_number = last_quotation.quotation_number + 1 if last_quotation else 1
-
         # Create a new Quotation object and save it to the database
         quotation = Quotation(
-            quotation_number=quotation_number,
+            quotation_number=next_quotation_number,
             customer_name=customer_name,
             telephone=telephone,
             car_type=car_type,
@@ -128,9 +125,10 @@ def quotation_view(request):
             downpayment=downpayment,
             balance=balance
         )
-        quotation.save()  # Save the new quotation with the auto-incremented number
+        quotation.save()  # Save the new quotation
 
         # Redirect to the home page after saving the quotation
+        return redirect('quotations/index.html')  # or any appropriate redirect
 
     # Render the form with the next quotation number
     return render(request, 'quotations/quotation.html', {'next_quotation_number': next_quotation_number})
